@@ -103,8 +103,27 @@ echo "Optimization complete! Enjoy a significantly cooler and snappier system."
   1. Install **Projectivy Launcher** (`com.spocky.projengmenu`).
   2. Enable accessibility service or set it as default home in Android Settings.
   3. **Performance Tip for Mali GPU:** In Projectivy Settings > **Appearance**:
-     * Set **Wallpaper** to a static image instead of dynamic video backdrops.
-     * Disable or reduce **Background Blur** (rendering live Gaussian blurs over 1080p is the #1 cause of launcher frame drops on the Cube 4).
+     * Turn **Background Blur** off (rendering live Gaussian blurs over 1080p is the #1 cause of launcher frame drops on the Cube 4).
+     * Set **Launcher wallpaper** to **Dynamic colors** or a local pack (see below) rather than **Reddit**.
+
+---
+
+### 5. Wallpaper Fix: Reddit API Breakdown vs. Local Wallpapers
+* **The Problem:** Projectivy Launcher defaults to fetching wallpapers dynamically from Reddit (`r/EarthPorn`). Due to Reddit's aggressive unauthenticated API rate limits and scraping blocks, the launcher frequently hangs on boot or shows a pitch-black screen.
+* **Why the Android System Wallpaper Fails on Cube 4:**
+  The Jireno Cube 4's physical LCD display panel is mounted internally in portrait (`1080x1920`) and hardware-rotated 270° (`r=3`) to output landscape `1920x1080`. Android's stock `ImageWallpaper` service attempts to draw a `1920x1920` square buffer that SurfaceFlinger rejects (`rejecting buffer: bufWidth=1080, bufHeight=1920, front.active.{w=1920, h=1920}`).
+* **The Solutions:**
+  * **Option A: Dynamic Colors (100% Free & Offline):**
+    In Projectivy Settings > **Appearance** > **Wallpaper** > **Launcher wallpaper**, select **Dynamic colors**. This samples the accent colors of whatever app tile is currently highlighted. It requires zero internet access and never fails.
+  * **Option B: Local Wallpaper Pack with Projectivy Premium:**
+    If you have Projectivy Premium (~$3–$5), the native **Folder** provider is unlocked. Push your preferred wallpapers to the projector:
+    ```bash
+    adb shell mkdir -p /sdcard/Pictures/Wallpapers
+    adb push your_wallpapers/*.jpg /sdcard/Pictures/Wallpapers/
+    ```
+    Then in Projectivy Settings > **Appearance** > **Wallpaper**, select **Folder** and choose `/sdcard/Pictures/Wallpapers/` to rotate local 1080p landscapes with zero network lag.
+  * **Option C: Pure Black Background (Maximum Performance):**
+    In Projectivy Settings > **Appearance** > **Wallpaper**, select **None**. Combined with blur turned off, this completely eliminates background GPU rendering overhead for the snappiest possible UI.
 
 ---
 

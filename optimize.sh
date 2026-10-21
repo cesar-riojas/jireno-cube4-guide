@@ -35,8 +35,8 @@ echo "==> 3. Trimming filesystem caches & performing NAND flash TRIM..."
 adb -s "${PROJECTOR_IP}:${PORT}" shell pm trim-caches 1000M 2>/dev/null || true
 adb -s "${PROJECTOR_IP}:${PORT}" shell sm fstrim 2>/dev/null || true
 
-echo "==> 4. Ahead-of-time (AOT) speed compiling primary applications..."
-for pkg in com.spocky.projengmenu com.apple.atve.androidtv.appletv com.amazon.amazonvideo.livingroom com.softmedia.receiver.castapp; do
+echo "==> 5. Ahead-of-time (AOT) speed compiling primary applications..."
+for pkg in com.klevico.monet com.oversea.aslauncher com.spocky.projengmenu com.apple.atve.androidtv.appletv com.amazon.amazonvideo.livingroom com.softmedia.receiver.castapp; do
   if adb -s "${PROJECTOR_IP}:${PORT}" shell pm path "$pkg" >/dev/null 2>&1; then
     echo "    Compiling $pkg..."
     adb -s "${PROJECTOR_IP}:${PORT}" shell cmd package compile -m speed "$pkg" 2>/dev/null || true

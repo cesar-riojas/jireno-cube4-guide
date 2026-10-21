@@ -24,7 +24,11 @@ adb -s "${PROJECTOR_IP}:${PORT}" shell settings put global window_animation_scal
 adb -s "${PROJECTOR_IP}:${PORT}" shell settings put global transition_animation_scale 0.0
 adb -s "${PROJECTOR_IP}:${PORT}" shell settings put global animator_duration_scale 0.0
 
-echo "==> 2. Disabling broken Google Cast receiver loop (prevents 403 CPU drain)..."
+echo "==> 2. Locking display orientation to standard 16:9 Landscape (0°)..."
+adb -s "${PROJECTOR_IP}:${PORT}" shell settings put system accelerometer_rotation 0
+adb -s "${PROJECTOR_IP}:${PORT}" shell settings put system user_rotation 0
+
+echo "==> 3. Disabling broken Google Cast receiver loop (prevents 403 CPU drain)..."
 adb -s "${PROJECTOR_IP}:${PORT}" shell pm disable-user --user 0 com.google.android.apps.mediashell 2>/dev/null || true
 
 echo "==> 3. Trimming filesystem caches & performing NAND flash TRIM..."
